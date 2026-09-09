@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Powerblend Shop — Equipment & Apparel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0B0C;
+    --charcoal:#17181A;
+    --charcoal-2:#1F2023;
+    --bone:#F4F2ED;
+    --ember:#FF4405;
+    --ember-dim:#C2380A;
+    --brass:#C9A66B;
+    --steel:#8A8D91;
+    --line: rgba(244,242,237,0.12);
+    --max: 1240px;
+    --ease: cubic-bezier(.16,.84,.44,1);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--bone);
+    font-family:'Inter', sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body.lock{overflow:hidden;}
+  ::selection{background:var(--ember); color:var(--ink);}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 32px;}
+
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(23,24,26,0.8);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 32px;
+    max-width:var(--max);
+    margin:0 auto;
+  }
+  .nav-left{
+    display:flex;
+    gap:20px;
+    align-items:center;
+  }
+  .nav-back{
+    background:none;
+    border:none;
+    color:var(--bone);
+    cursor:pointer;
+    font-size:24px;
+    display:flex;
+    align-items:center;
+  }
+  .nav-back:hover{color:var(--ember);}
+  .logo{font-weight:700; font-size:16px; letter-spacing:0.08em;}
+
+  .nav-right{
+    display:flex;
+    gap:20px;
+    align-items:center;
+  }
+  .cart-icon{
+    background:none;
+    border:none;
+    color:var(--bone);
+    cursor:pointer;
+    font-size:20px;
+    position:relative;
+  }
+  .cart-count{
+    position:absolute;
+    top:-8px;
+    right:-8px;
+    background:var(--ember);
+    color:var(--ink);
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:700;
+  }
+
+  h1, h2{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:0.92;
+  }
+  h1{font-size:clamp(32px, 6vw, 64px); margin:40px 0 20px;}
+  h2{font-size:clamp(24px, 4vw, 48px); margin:32px 0 24px;}
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--ember);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:18px; height:2px;
+    background:var(--ember);
+    display:inline-block;
+  }
+
+  .shop-header{
+    padding:60px 0 40px;
+  }
+
+  .category-tabs{
+    display:flex;
+    gap:16px;
+    margin-bottom:40px;
+    overflow-x:auto;
+    padding-bottom:12px;
+  }
+  .category-tab{
+    background:var(--charcoal-2);
+    border:1px solid var(--line);
+    color:var(--bone);
+    padding:10px 20px;
+    font-weight:600;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    cursor:pointer;
+    border-radius:4px;
+    white-space:nowrap;
+    transition:all 0.3s ease;
+  }
+  .category-tab:hover{
+    border-color:var(--ember);
+    color:var(--ember);
+  }
+  .category-tab.active{
+    background:var(--ember);
+    color:var(--ink);
+    border-color:var(--ember);
+  }
+
+  .products-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:24px;
+    margin-bottom:60px;
+  }
+
+  .product-card{
+    background:var(--charcoal-2);
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+    transition:all 0.4s var(--ease);
+  }
+  .product-card:hover{
+    border-color:var(--ember);
+    transform:translateY(-8px);
+    box-shadow:0 20px 60px rgba(255,68,5,0.15);
+  }
+
+  .product-image{
+    background:linear-gradient(135deg, rgba(255,68,5,0.1) 0%, rgba(201,166,107,0.05) 100%);
+    height:240px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:80px;
+    overflow:hidden;
+  }
+
+  .product-info{
+    padding:20px;
+  }
+  .product-category{
+    font-size:11px;
+    color:var(--brass);
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    margin-bottom:8px;
+  }
+  .product-name{
+    font-weight:600;
+    font-size:16px;
+    margin-bottom:8px;
+    line-height:1.3;
+  }
+  .product-description{
+    font-size:13px;
+    color:rgba(244,242,237,0.7);
+    margin-bottom:16px;
+    line-height:1.5;
+  }
+
+  .product-price{
+    font-size:20px;
+    font-weight:700;
+    color:var(--ember);
+    margin-bottom:16px;
+  }
+
+  .size-selector{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:8px;
+    margin-bottom:16px;
+  }
+  .size-option{
+    background:var(--charcoal);
+    border:1px solid var(--line);
+    color:var(--bone);
+    padding:8px;
+    font-size:12px;
+    font-weight:600;
+    text-align:center;
+    cursor:pointer;
+    border-radius:4px;
+    transition:all 0.3s ease;
+  }
+  .size-option:hover{
+    border-color:var(--ember);
+  }
+  .size-option.selected{
+    background:var(--ember);
+    color:var(--ink);
+    border-color:var(--ember);
+  }
+
+  .quantity-selector{
+    display:flex;
+    gap:8px;
+    margin-bottom:16px;
+    align-items:center;
+  }
+  .qty-btn{
+    background:var(--charcoal);
+    border:1px solid var(--line);
+    color:var(--bone);
+    width:32px;
+    height:32px;
+    cursor:pointer;
+    border-radius:4px;
+    font-weight:600;
+    transition:all 0.3s ease;
+  }
+  .qty-btn:hover{
+    border-color:var(--ember);
+    color:var(--ember);
+  }
+  .qty-display{
+    flex:1;
+    text-align:center;
+    font-size:14px;
+    font-weight:600;
+  }
+
+  .btn-primary{
+    width:100%;
+    background:var(--ember);
+    color:var(--ink);
+    border:none;
+    padding:12px 24px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    transition:all 0.3s var(--ease);
+    border-radius:4px;
+  }
+  .btn-primary:hover{
+    background:var(--ember-dim);
+    transform:translateY(-2px);
+  }
+
+  .cart-summary{
+    background:linear-gradient(135deg, rgba(255,68,5,0.08) 0%, rgba(201,166,107,0.04) 100%);
+    border:1px solid var(--line);
+    padding:32px;
+    border-radius:8px;
+    margin-bottom:40px;
+    position:sticky;
+    bottom:20px;
+  }
+  .cart-summary h3{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    font-size:18px;
+    margin-bottom:16px;
+  }
+  .cart-item{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  .cart-item:last-child{
+    border-bottom:none;
+  }
+  .cart-total{
+    display:flex;
+    justify-content:space-between;
+    padding:16px 0 0;
+    margin-top:16px;
+    border-top:2px solid var(--ember);
+    font-weight:700;
+    font-size:18px;
+  }
+  .checkout-btn{
+    width:100%;
+    background:var(--ember);
+    color:var(--ink);
+    border:none;
+    padding:16px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-top:20px;
+    border-radius:4px;
+    transition:all 0.3s var(--ease);
+  }
+  .checkout-btn:hover{
+    background:var(--ember-dim);
+    transform:translateY(-2px);
+  }
+
+  .empty-cart{
+    text-align:center;
+    padding:32px;
+    color:rgba(244,242,237,0.6);
+  }
+  .empty-cart p{
+    font-size:14px;
+    margin-bottom:16px;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:40px 0;
+    font-size:13px;
+    color:rgba(244,242,237,0.6);
+    text-align:center;
+  }
+
+  @media(max-width:768px){
+    .products-grid{
+      grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+      gap:16px;
+    }
+    .size-selector{
+      grid-template-columns:repeat(3, 1fr);
+    }
+    .cart-summary{
+      position:static;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="nav-left">
+      <button class="nav-back" onclick="window.history.back()" aria-label="Go back">&larr;</button>
+      <div class="logo">POWERBLEND SHOP</div>
+    </div>
+    <div class="nav-right">
+      <button class="cart-icon" onclick="toggleCartSummary()">🛒
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap">
+  <section class="shop-header">
+    <div class="eyebrow">GEAR UP</div>
+    <h1>Start Your Blend</h1>
+    <p style="font-size:18px; color:rgba(244,242,237,0.85); max-width:600px;">Get everything you need for your fitness journey — from premium equipment to branded apparel and premium supplements.</p>
+  </section>
+
+  <div class="category-tabs">
+    <button class="category-tab active" onclick="filterCategory('all')">All Products</button>
+    <button class="category-tab" onclick="filterCategory('equipment')">Equipment</button>
+    <button class="category-tab" onclick="filterCategory('supplements')">Supplements</button>
+    <button class="category-tab" onclick="filterCategory('apparel')">Apparel</button>
+    <button class="category-tab" onclick="filterCategory('footwear')">Footwear</button>
+  </div>
+
+  <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<div class="wrap" style="margin-bottom:40px;">
+  <div class="cart-summary" id="cartSummary" style="display:none;">
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <div class="cart-total">
+      <span>Total:</span>
+      <span id="cartTotal">$0.00</span>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2024 Powerblend. All rights reserved.</p>
+</footer>
+
+<script>
+  const products = [
+    // Equipment
+    {
+      id: 1,
+      name: 'Adjustable Dumbbells (5-50 lbs)',
+      category: 'equipment',
+      price: 199.99,
+      image: 'https://images.unsplash.com/photo-1603077492340-e6e62b2a688b?auto=format&fit=crop&w=600&q=75',
+      description: 'Premium adjustable dumbbells with ergonomic grip and smooth resistance.',
+      options: null
+    },
+    {
+      id: 2,
+      name: 'Olympic Barbell (45 lbs)',
+      category: 'equipment',
+      price: 149.99,
+      image: 'https://images.unsplash.com/photo-1620188467120-5042ed1eb5da?auto=format&fit=crop&w=600&q=75',
+      description: 'Heavy-duty Olympic barbell with knurl grip for safe lifting.',
+      options: null
+    },
+    {
+      id: 3,
+      name: 'Resistance Bands Set',
+      category: 'equipment',
+      price: 34.99,
+      image: 'https://images.unsplash.com/photo-1767404890803-228d5390fcd4?auto=format&fit=crop&w=600&q=75',
+      description: 'Complete set of 5 resistance bands for strength training.',
+      options: null
+    },
+    {
+      id: 4,
+      name: 'Ab Roller',
+      category: 'equipment',
+      price: 29.99,
+      image: 'https://images.unsplash.com/photo-1674600625236-ad76734fee0d?auto=format&fit=crop&w=600&q=75',
+      description: 'Compact ab roller for core strengthening workouts.',
+      options: null
+    },
+    {
+      id: 5,
+      name: 'Yoga Mat (6mm)',
+      category: 'equipment',
+      price: 44.99,
+      image: 'https://images.unsplash.com/photo-1520877745935-616158eb7fcc?auto=format&fit=crop&w=600&q=75',
+      description: 'Non-slip premium yoga mat for comfort and stability.',
+      options: null
+    },
+
+    // Supplements
+    {
+      id: 6,
+      name: 'Whey Protein Powder',
+      category: 'supplements',
+      price: 49.99,
+      image: 'https://images.unsplash.com/photo-1693996045899-7cf0ac0229c7?auto=format&fit=crop&w=600&q=75',
+      description: 'High-quality whey protein isolate. 5lb container with 50 servings.',
+      options: null
+    },
+    {
+      id: 7,
+      name: 'Creatine Monohydrate',
+      category: 'supplements',
+      price: 24.99,
+      image: 'https://images.unsplash.com/photo-1704650311974-8ce378f0e8b0?auto=format&fit=crop&w=600&q=75',
+      description: 'Pure creatine monohydrate powder. 300g, unflavored.',
+      options: null
+    },
+    {
+      id: 8,
+      name: 'BCAA Blend',
+      category: 'supplements',
+      price: 39.99,
+      image: 'https://images.unsplash.com/photo-1693996045300-521e9d08cabc?auto=format&fit=crop&w=600&q=75',
+      description: 'Branched-chain amino acids for muscle recovery. 30 servings.',
+      options: null
+    },
+    {
+      id: 9,
+      name: 'Pre-Workout Energy',
+      category: 'supplements',
+      price: 44.99,
+      image: 'https://images.unsplash.com/photo-1693996046744-d7d7434bc777?auto=format&fit=crop&w=600&q=75',
+      description: 'Energizing pre-workout formula with caffeine and beta-alanine.',
+      options: null
+    },
+    {
+      id: 10,
+      name: 'Multivitamin',
+      category: 'supplements',
+      price: 34.99,
+      image: 'https://images.unsplash.com/photo-1761361414308-b1b683d1f33a?auto=format&fit=crop&w=600&q=75',
+      description: 'Complete daily multivitamin with essential micronutrients. 60 tablets.',
+      options: null
+    },
+
+    // Apparel
+    {
+      id: 11,
+      name: 'Powerblend Gym Fit T-Shirt',
+      category: 'apparel',
+      price: 39.99,
+      image: 'https://images.unsplash.com/photo-1592494637122-16e3b8f49b4e?auto=format&fit=crop&w=600&q=75',
+      description: 'Premium moisture-wicking cotton blend. Official Powerblend branded.',
+      options: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+    },
+    {
+      id: 12,
+      name: 'Performance Tank Top',
+      category: 'apparel',
+      price: 34.99,
+      image: 'https://images.unsplash.com/photo-1549070297-b87d304c0f89?auto=format&fit=crop&w=600&q=75',
+      description: 'Sleeveless athletic tank with premium breathable fabric.',
+      options: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+    },
+    {
+      id: 13,
+      name: 'Training Shorts',
+      category: 'apparel',
+      price: 49.99,
+      image: 'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&w=600&q=75',
+      description: 'Lightweight shorts with inner liner and multiple pockets.',
+      options: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+    },
+    {
+      id: 14,
+      name: 'Powerblend Hoodie',
+      category: 'apparel',
+      price: 79.99,
+      image: 'https://images.unsplash.com/photo-1562826665-85cdb455ddb1?auto=format&fit=crop&w=600&q=75',
+      description: 'Premium cotton blend hoodie with embroidered logo.',
+      options: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+    },
+    {
+      id: 15,
+      name: 'Compression Leggings',
+      category: 'apparel',
+      price: 64.99,
+      image: 'https://images.unsplash.com/photo-1520877745935-616158eb7fcc?auto=format&fit=crop&w=600&q=75&crop=bottom',
+      description: 'High-waist compression leggings for workouts.',
+      options: ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+    },
+
+    // Footwear
+    {
+      id: 16,
+      name: 'Cross-Training Shoes',
+      category: 'footwear',
+      price: 129.99,
+      image: 'https://images.unsplash.com/photo-1591311630200-ffa9120a540f?auto=format&fit=crop&w=600&q=75',
+      description: 'Versatile cross-training shoes with premium support.',
+      options: ['6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
+    },
+    {
+      id: 17,
+      name: 'Powerblend Lifting Shoes',
+      category: 'footwear',
+      price: 149.99,
+      image: 'https://images.unsplash.com/photo-1495557077419-2384a0150025?auto=format&fit=crop&w=600&q=75',
+      description: 'Specialized weightlifting shoes with elevated heel.',
+      options: ['6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
+    },
+    {
+      id: 18,
+      name: 'Running Shoes',
+      category: 'footwear',
+      price: 119.99,
+      image: 'https://images.unsplash.com/photo-1560816801-08a84aa4bcd7?auto=format&fit=crop&w=600&q=75',
+      description: 'Lightweight running shoes with cushioned midsole.',
+      options: ['6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
+    }
+  ];
+
+  let cart = [];
+  let currentCategory = 'all';
+
+  function renderProducts(category = 'all') {
+    const filtered = category === 'all' ? products : products.filter(p => p.category === category);
+    const grid = document.getElementById('productsGrid');
+    grid.innerHTML = '';
+
+    filtered.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      const sizeHtml = product.options ? `
+        <div style="margin-bottom:16px;">
+          <label style="font-size:12px; font-weight:600; text-transform:uppercase; display:block; margin-bottom:8px;">Select Size</label>
+          <div class="size-selector" id="sizes-${product.id}">
+            ${product.options.map(size => 
+              `<button class="size-option" onclick="selectSize(${product.id}, '${size}')">${size}</button>`
+            ).join('')}
+          </div>
+        </div>
+      ` : '';
+
+      card.innerHTML = `
+        <div class="product-image"><img src="${product.image}" alt="${product.name}" style="width:100%; height:100%; object-fit:cover;"></div>
+        <div class="product-info">
+          <div class="product-category">${product.category}</div>
+          <div class="product-name">${product.name}</div>
+          <div class="product-description">${product.description}</div>
+          <div class="product-price">$${product.price.toFixed(2)}</div>
+          ${sizeHtml}
+          <div class="quantity-selector">
+            <button class="qty-btn" onclick="decreaseQty(${product.id})">−</button>
+            <div class="qty-display" id="qty-${product.id}">1</div>
+            <button class="qty-btn" onclick="increaseQty(${product.id})">+</button>
+          </div>
+          <button class="btn-primary" onclick="addToCart(${product.id})">Add to Cart</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  let quantities = {};
+  let selectedSizes = {};
+
+  function increaseQty(productId) {
+    quantities[productId] = (quantities[productId] || 1) + 1;
+    document.getElementById(`qty-${productId}`).textContent = quantities[productId];
+  }
+
+  function decreaseQty(productId) {
+    quantities[productId] = Math.max(1, (quantities[productId] || 1) - 1);
+    document.getElementById(`qty-${productId}`).textContent = quantities[productId];
+  }
+
+  function selectSize(productId, size) {
+    selectedSizes[productId] = size;
+    document.querySelectorAll(`#sizes-${productId} .size-option`).forEach(btn => {
+      btn.classList.remove('selected');
+      if (btn.textContent === size) btn.classList.add('selected');
+    });
+  }
+
+  function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    const qty = quantities[productId] || 1;
+    const size = selectedSizes[productId] || null;
+
+    const cartItem = {
+      productId,
+      name: product.name,
+      price: product.price,
+      qty,
+      size
+    };
+
+    cart.push(cartItem);
+    updateCartCount();
+    updateCartSummary();
+    alert(`${product.name}${size ? ' (' + size + ')' : ''} x${qty} added to cart!`);
+    quantities[productId] = 1;
+    selectedSizes[productId] = null;
+    document.getElementById(`qty-${productId}`).textContent = 1;
+  }
+
+  function updateCartCount() {
+    const count = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById('cartCount').textContent = count;
+  }
+
+  function updateCartSummary() {
+    const cartItemsDiv = document.getElementById('cartItems');
+    if (cart.length === 0) {
+      cartItemsDiv.innerHTML = '<div class="empty-cart"><p>Your cart is empty</p></div>';
+      document.getElementById('cartTotal').textContent = '$0.00';
+      return;
+    }
+
+    cartItemsDiv.innerHTML = cart.map((item, idx) => `
+      <div class="cart-item">
+        <span>${item.name}${item.size ? ' (' + item.size + ')' : ''} x${item.qty}</span>
+        <span>$${(item.price * item.qty).toFixed(2)} <button onclick="removeFromCart(${idx})" style="background:none;border:none;color:var(--ember);cursor:pointer;margin-left:8px;">✕</button></span>
+      </div>
+    `).join('');
+
+    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    document.getElementById('cartTotal').textContent = '$' + total.toFixed(2);
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCartCount();
+    updateCartSummary();
+  }
+
+  function toggleCartSummary() {
+    const summary = document.getElementById('cartSummary');
+    summary.style.display = summary.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function filterCategory(category) {
+    currentCategory = category;
+    document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+    event.target.classList.add('active');
+    renderProducts(category);
+  }
+
+  function checkout() {
+    if (cart.length === 0) {
+      alert('Your cart is empty!');
+      return;
+    }
+    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    alert(`Processing order for $${total.toFixed(2)}...\n\nThank you for your purchase! Your order will be shipped within 3-5 business days.`);
+    cart = [];
+    quantities = {};
+    selectedSizes = {};
+    updateCartCount();
+    updateCartSummary();
+    renderProducts(currentCategory);
+  }
+
+  // Initialize
+  renderProducts();
+</script>
+
+</body>
+</html>
