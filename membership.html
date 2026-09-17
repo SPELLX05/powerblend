@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Powerblend Membership Plans — Train the Blend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0B0C;
+    --charcoal:#17181A;
+    --charcoal-2:#1F2023;
+    --bone:#F4F2ED;
+    --ember:#FF4405;
+    --ember-dim:#C2380A;
+    --brass:#C9A66B;
+    --steel:#8A8D91;
+    --line: rgba(244,242,237,0.12);
+    --max: 1240px;
+    --ease: cubic-bezier(.16,.84,.44,1);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--bone);
+    font-family:'Inter', sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--ember); color:var(--ink);}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 32px;}
+
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(23,24,26,0.8);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 32px;
+    max-width:var(--max);
+    margin:0 auto;
+  }
+  .logo{font-weight:700; font-size:16px; letter-spacing:0.08em;}
+  .nav-left{
+    display:flex;
+    gap:40px;
+    align-items:center;
+  }
+  .nav-left a{
+    font-size:14px;
+    transition:color 0.3s ease;
+  }
+  .nav-left a:hover{color:var(--ember);}
+  .nav-right{
+    display:flex;
+    gap:20px;
+    align-items:center;
+  }
+  .nav-login{
+    background:none;
+    border:none;
+    color:var(--bone);
+    cursor:pointer;
+    font-size:14px;
+    font-weight:500;
+    transition:color 0.3s ease;
+  }
+  .nav-login:hover{color:var(--ember);}
+  .nav-back{
+    background:none;
+    border:none;
+    color:var(--bone);
+    cursor:pointer;
+    font-size:24px;
+    display:flex;
+    align-items:center;
+    padding:8px;
+  }
+  .nav-back:hover{color:var(--ember);}
+
+  h1, h2{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:0.92;
+  }
+  h1{font-size:clamp(32px, 6vw, 64px); margin:40px 0 20px;}
+  h2{font-size:clamp(24px, 4vw, 48px); margin:32px 0 16px;}
+  h3{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    font-size:20px;
+    margin:24px 0 12px;
+  }
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--ember);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:18px; height:2px;
+    background:var(--ember);
+    display:inline-block;
+  }
+
+  .btn-primary{
+    background:var(--ember);
+    color:var(--ink);
+    border:none;
+    padding:14px 32px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    transition:all 0.3s var(--ease);
+    border-radius:4px;
+  }
+  .btn-primary:hover{
+    background:var(--ember-dim);
+    transform:translateY(-2px);
+  }
+  .btn-ghost{
+    background:none;
+    border:1px solid var(--bone);
+    color:var(--bone);
+    padding:12px 28px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    transition:all 0.3s ease;
+    border-radius:4px;
+  }
+  .btn-ghost:hover{
+    border-color:var(--ember);
+    color:var(--ember);
+  }
+
+  .membership-hero{
+    padding:80px 0 60px;
+    text-align:center;
+  }
+  .membership-intro{
+    max-width:700px;
+    margin:0 auto 60px;
+  }
+  .membership-intro p{
+    font-size:18px;
+    line-height:1.8;
+    color:rgba(244,242,237,0.85);
+    margin-bottom:16px;
+  }
+
+  .plans-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+    gap:32px;
+    margin:60px 0;
+  }
+  .plan-card{
+    background:var(--charcoal-2);
+    border:1px solid var(--line);
+    padding:40px 32px;
+    border-radius:8px;
+    transition:all 0.4s var(--ease);
+    display:flex;
+    flex-direction:column;
+  }
+  .plan-card:hover{
+    border-color:var(--ember);
+    transform:translateY(-8px);
+    box-shadow:0 20px 60px rgba(255,68,5,0.15);
+  }
+  .plan-card.featured{
+    border:2px solid var(--ember);
+    background:linear-gradient(135deg, rgba(255,68,5,0.08) 0%, rgba(201,166,107,0.04) 100%);
+    transform:scale(1.05);
+  }
+  .plan-badge{
+    display:inline-block;
+    background:var(--ember);
+    color:var(--ink);
+    padding:6px 16px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    border-radius:20px;
+    margin-bottom:20px;
+    width:fit-content;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .plan-name{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:900;
+    text-transform:uppercase;
+    font-size:28px;
+    margin-bottom:8px;
+  }
+  .plan-price{
+    font-size:48px;
+    font-weight:900;
+    color:var(--ember);
+    margin-bottom:8px;
+  }
+  .plan-price small{
+    font-size:16px;
+    color:var(--steel);
+    font-weight:400;
+  }
+  .plan-duration{
+    font-size:14px;
+    color:var(--steel);
+    margin-bottom:24px;
+    padding-bottom:24px;
+    border-bottom:1px solid var(--line);
+  }
+  .plan-features{
+    list-style:none;
+    margin-bottom:32px;
+    flex-grow:1;
+  }
+  .plan-features li{
+    padding:12px 0;
+    font-size:14px;
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+  }
+  .plan-features li::before{
+    content:'✓';
+    color:var(--ember);
+    font-weight:bold;
+    min-width:16px;
+  }
+  .plan-cta{
+    width:100%;
+    margin-top:auto;
+  }
+
+  .membership-benefits{
+    padding:60px 0;
+    background:linear-gradient(135deg, rgba(255,68,5,0.05) 0%, rgba(201,166,107,0.03) 100%);
+    margin:60px 0;
+    border-radius:8px;
+  }
+  .benefits-content{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:40px;
+  }
+  .benefit-item{
+    text-align:center;
+  }
+  .benefit-icon{
+    font-size:48px;
+    margin-bottom:16px;
+  }
+  .benefit-item h3{
+    margin-bottom:12px;
+  }
+  .benefit-item p{
+    font-size:14px;
+    color:rgba(244,242,237,0.75);
+    line-height:1.6;
+  }
+
+  .faq-section{
+    padding:60px 0;
+  }
+  .faq-item{
+    margin-bottom:24px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:24px;
+  }
+  .faq-item:last-child{
+    border-bottom:none;
+  }
+  .faq-question{
+    font-weight:600;
+    font-size:16px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    user-select:none;
+  }
+  .faq-question::after{
+    content:'▼';
+    font-size:12px;
+    transition:transform 0.3s ease;
+  }
+  .faq-item.open .faq-question::after{
+    transform:rotate(180deg);
+  }
+  .faq-answer{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.3s ease;
+    color:rgba(244,242,237,0.75);
+    font-size:14px;
+    line-height:1.6;
+  }
+  .faq-item.open .faq-answer{
+    max-height:500px;
+    margin-top:16px;
+  }
+
+  .cta-section{
+    text-align:center;
+    padding:80px 0;
+    border-top:1px solid var(--line);
+  }
+  .cta-section h2{
+    margin-bottom:24px;
+  }
+  .cta-section p{
+    font-size:18px;
+    color:rgba(244,242,237,0.85);
+    margin-bottom:32px;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:40px 0;
+    font-size:13px;
+    color:rgba(244,242,237,0.6);
+    text-align:center;
+  }
+
+  @media(max-width:768px){
+    nav{flex-direction:column; gap:16px; padding:16px 32px;}
+    .nav-left{flex-direction:column; gap:16px; width:100%;}
+    .nav-left a{width:100%;}
+    .nav-right{width:100%;}
+    .plans-grid{grid-template-columns:1fr;}
+    .plan-card.featured{transform:scale(1);}
+    .membership-hero{padding:40px 0;}
+    h1{font-size:32px; margin:20px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <button class="nav-back" onclick="window.history.back()" aria-label="Go back">&larr;</button>
+    <div class="logo">POWERBLEND</div>
+    <div style="width:40px;"></div>
+  </nav>
+</header>
+
+<div class="wrap">
+  <section class="membership-hero">
+    <div class="membership-intro">
+      <div class="eyebrow">JOIN THE BLEND</div>
+      <h1>Membership Plans</h1>
+      <p>Choose the perfect membership plan for your fitness journey. All plans include access to our world-class coaches, equipment, and community.</p>
+    </div>
+  </section>
+
+  <div class="plans-grid">
+    <div class="plan-card">
+      <div class="plan-name">Drop-In</div>
+      <div class="plan-price">$25<small>/class</small></div>
+      <div class="plan-duration">Pay as you go</div>
+      <ul class="plan-features">
+        <li>Single class access</li>
+        <li>Full facility access</li>
+        <li>Changing rooms & showers</li>
+        <li>Community access</li>
+      </ul>
+      <button class="btn-primary plan-cta">Book a Class</button>
+    </div>
+
+    <div class="plan-card featured">
+      <div class="plan-badge">MOST POPULAR</div>
+      <div class="plan-name">Monthly Pass</div>
+      <div class="plan-price">$129<small>/month</small></div>
+      <div class="plan-duration">Billed monthly</div>
+      <ul class="plan-features">
+        <li>Unlimited classes</li>
+        <li>Priority booking</li>
+        <li>Full facility access</li>
+        <li>Coach consultations</li>
+        <li>Member-only events</li>
+        <li>10% supplement discount</li>
+      </ul>
+      <button class="btn-primary plan-cta">Start Your Journey</button>
+    </div>
+
+    <div class="plan-card">
+      <div class="plan-name">Annual</div>
+      <div class="plan-price">$1,299<small>/year</small></div>
+      <div class="plan-duration">2 months free</div>
+      <ul class="plan-features">
+        <li>Unlimited classes</li>
+        <li>Priority booking</li>
+        <li>Full facility access</li>
+        <li>Monthly 1-on-1 sessions</li>
+        <li>Exclusive member events</li>
+        <li>15% supplement discount</li>
+      </ul>
+      <button class="btn-primary plan-cta">Commit to Your Goals</button>
+    </div>
+  </div>
+
+  <section class="membership-benefits">
+    <div class="wrap">
+      <h2 style="text-align:center; margin-top:0;">What's Included</h2>
+      <div class="benefits-content">
+        <div class="benefit-item">
+          <div class="benefit-icon">🏋️</div>
+          <h3>Expert Coaches</h3>
+          <p>Learn from certified trainers who understand your goals and push you to new limits.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🔥</div>
+          <h3>Premium Equipment</h3>
+          <p>Access to state-of-the-art facilities and equipment designed for optimal performance.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">👥</div>
+          <h3>Community</h3>
+          <p>Join a supportive community of fitness enthusiasts and achieve your goals together.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">📊</div>
+          <h3>Progress Tracking</h3>
+          <p>Monitor your fitness journey with performance metrics and personalized coaching.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🎁</div>
+          <h3>Member Perks</h3>
+          <p>Exclusive discounts on supplements, merchandise, and special events.</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">⏰</div>
+          <h3>Flexible Scheduling</h3>
+          <p>Classes available throughout the day to fit your busy lifestyle.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <div class="faq-question">Can I switch between membership plans?</div>
+      <div class="faq-answer">Yes! You can upgrade or downgrade your membership at any time. Changes will take effect at the start of your next billing cycle.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">What if I need to cancel my membership?</div>
+      <div class="faq-answer">You can cancel anytime with a 14-day notice. No cancellation fees or long-term contracts required. We'll miss you, but the option is there if you need it.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Do you offer corporate memberships?</div>
+      <div class="faq-answer">Absolutely! We offer special corporate rates for groups. Contact our team at corporate@powerblend.com for more information.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Can I freeze my membership?</div>
+      <div class="faq-answer">Yes, we offer up to 3 months of membership freeze per year. No charge during your freeze period.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Is there a first-time visitor discount?</div>
+      <div class="faq-answer">Yes! First-time visitors get a free assessment and 50% off their first month when they sign up for a membership.</div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to Transform Your Fitness?</h2>
+    <p>Join thousands of members at Powerblend and start your fitness journey today.</p>
+    <button class="btn-primary">Select Your Plan</button>
+  </section>
+</div>
+
+<footer>
+  <p>&copy; 2024 Powerblend. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+</footer>
+
+<script src="api-client.js"></script>
+<script>
+  // FAQ toggle
+  document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', () => {
+      question.parentElement.classList.toggle('open');
+    });
+  });
+
+  // Plan CTA buttons
+  document.querySelectorAll('.plan-cta').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const card = btn.closest('.plan-card');
+      const plan = card.querySelector('.plan-name').textContent.trim();
+      const user = JSON.parse(localStorage.getItem('powerblendUser') || 'null');
+      if (!user) {
+        alert('Please log in or create an account before choosing a membership.');
+        window.location.href = 'login.html';
+        return;
+      }
+      try {
+        if (window.PowerblendAPI) {
+          await window.PowerblendAPI.submitMembership({ plan, email: user.email, source: 'membership-page' });
+        } else {
+          localStorage.setItem('powerblend:lastMembership', JSON.stringify({ plan }));
+        }
+        alert(`Your ${plan} membership request has been recorded. Our team will contact you shortly.`);
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

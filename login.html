@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Powerblend Login — Train the Blend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0B0C;
+    --charcoal:#17181A;
+    --charcoal-2:#1F2023;
+    --bone:#F4F2ED;
+    --ember:#FF4405;
+    --ember-dim:#C2380A;
+    --brass:#C9A66B;
+    --steel:#8A8D91;
+    --line: rgba(244,242,237,0.12);
+    --max: 1240px;
+    --ease: cubic-bezier(.16,.84,.44,1);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--bone);
+    font-family:'Inter', sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--ember); color:var(--ink);}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+
+  header{
+    padding:20px 0;
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 32px;
+    max-width:var(--max);
+    margin:0 auto;
+  }
+  .logo{
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.08em;
+  }
+  .nav-back{
+    background:none;
+    border:none;
+    color:var(--bone);
+    cursor:pointer;
+    font-size:24px;
+    display:flex;
+    align-items:center;
+    padding:8px;
+  }
+  .nav-back:hover{color:var(--ember);}
+
+  .auth-container{
+    max-width:420px;
+    margin:60px auto;
+    padding:0 32px;
+  }
+
+  h1{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:0.92;
+    font-size:40px;
+    margin-bottom:12px;
+  }
+  .subtitle{
+    color:rgba(244,242,237,0.75);
+    font-size:16px;
+    margin-bottom:40px;
+  }
+
+  .auth-tabs{
+    display:flex;
+    gap:0;
+    margin-bottom:32px;
+    border-bottom:1px solid var(--line);
+  }
+  .tab-btn{
+    flex:1;
+    background:none;
+    border:none;
+    border-bottom:2px solid transparent;
+    color:var(--bone);
+    padding:16px;
+    font-weight:600;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    cursor:pointer;
+    transition:all 0.3s ease;
+    position:relative;
+    top:1px;
+  }
+  .tab-btn:hover{
+    color:var(--ember);
+  }
+  .tab-btn.active{
+    color:var(--ember);
+    border-bottom-color:var(--ember);
+  }
+
+  .tab-panel{
+    display:none;
+  }
+  .tab-panel.active{
+    display:block;
+    animation:fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .form-group{
+    margin-bottom:20px;
+  }
+  label{
+    display:block;
+    font-weight:600;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-bottom:8px;
+    color:rgba(244,242,237,0.9);
+  }
+  input, select{
+    width:100%;
+    background:var(--charcoal-2);
+    border:1px solid var(--line);
+    color:var(--bone);
+    padding:12px 14px;
+    font-size:14px;
+    font-family:inherit;
+    border-radius:4px;
+    transition:all 0.3s ease;
+  }
+  input:focus, select:focus{
+    outline:none;
+    border-color:var(--ember);
+    background:rgba(255,68,5,0.05);
+  }
+  input::placeholder{
+    color:rgba(244,242,237,0.4);
+  }
+
+  .form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  .form-row .form-group{
+    margin-bottom:0;
+  }
+
+  .checkbox-group{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:24px;
+    font-size:14px;
+  }
+  input[type="checkbox"]{
+    width:auto;
+    cursor:pointer;
+    margin:0;
+  }
+  .checkbox-group label{
+    margin:0;
+    text-transform:none;
+    font-weight:400;
+    letter-spacing:0;
+    display:inline;
+  }
+  .checkbox-group a{
+    color:var(--ember);
+  }
+
+  .btn-primary{
+    width:100%;
+    background:var(--ember);
+    color:var(--ink);
+    border:none;
+    padding:14px 32px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    transition:all 0.3s var(--ease);
+    border-radius:4px;
+    margin-bottom:20px;
+  }
+  .btn-primary:hover{
+    background:var(--ember-dim);
+    transform:translateY(-2px);
+  }
+  .btn-primary:active{
+    transform:translateY(0);
+  }
+
+  .form-foot{
+    text-align:center;
+    font-size:14px;
+  }
+  .form-foot button{
+    background:none;
+    border:none;
+    color:var(--ember);
+    cursor:pointer;
+    font-weight:600;
+    text-decoration:underline;
+    padding:0;
+    font-size:14px;
+  }
+  .form-foot button:hover{
+    color:var(--brass);
+  }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    margin:24px 0;
+    gap:16px;
+    font-size:13px;
+    color:rgba(244,242,237,0.5);
+  }
+  .divider::before, .divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  .social-login{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:20px;
+  }
+  .social-btn{
+    background:var(--charcoal-2);
+    border:1px solid var(--line);
+    color:var(--bone);
+    padding:12px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:13px;
+    border-radius:4px;
+    transition:all 0.3s ease;
+  }
+  .social-btn:hover{
+    border-color:var(--ember);
+    background:rgba(255,68,5,0.05);
+  }
+
+  .password-reset{
+    text-align:right;
+    margin-bottom:20px;
+  }
+  .password-reset a{
+    font-size:13px;
+    color:var(--brass);
+    text-decoration:none;
+    transition:color 0.3s ease;
+  }
+  .password-reset a:hover{
+    color:var(--ember);
+  }
+
+  .help-section{
+    background:linear-gradient(135deg, rgba(255,68,5,0.05) 0%, rgba(201,166,107,0.03) 100%);
+    padding:20px;
+    border-radius:8px;
+    margin-top:40px;
+    text-align:center;
+  }
+  .help-section h4{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    font-size:14px;
+    margin-bottom:8px;
+  }
+  .help-section p{
+    font-size:13px;
+    color:rgba(244,242,237,0.75);
+    margin-bottom:12px;
+  }
+  .help-btn{
+    background:none;
+    border:1px solid var(--bone);
+    color:var(--bone);
+    padding:8px 16px;
+    font-weight:600;
+    cursor:pointer;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    border-radius:4px;
+    transition:all 0.3s ease;
+  }
+  .help-btn:hover{
+    border-color:var(--ember);
+    color:var(--ember);
+  }
+
+  .success-message{
+    display:none;
+    background:rgba(76,175,80,0.15);
+    border:1px solid rgba(76,175,80,0.3);
+    color:rgba(76,175,80,0.9);
+    padding:16px;
+    border-radius:4px;
+    margin-bottom:20px;
+    font-size:14px;
+  }
+  .success-message.show{
+    display:block;
+  }
+
+  @media(max-width:768px){
+    .auth-container{
+      margin:40px auto;
+    }
+    h1{
+      font-size:28px;
+    }
+    .form-row{
+      grid-template-columns:1fr;
+    }
+    .social-login{
+      grid-template-columns:1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <button class="nav-back" onclick="window.history.back()" aria-label="Go back">&larr;</button>
+    <div class="logo">POWERBLEND</div>
+    <div style="width:40px;"></div>
+  </nav>
+</header>
+
+<div class="auth-container">
+  <div id="successMessage" class="success-message"></div>
+
+  <div class="auth-tabs">
+    <button class="tab-btn active" data-tab="login">Log In</button>
+    <button class="tab-btn" data-tab="signup">Sign Up</button>
+  </div>
+
+  <!-- LOGIN PANEL -->
+  <div class="tab-panel active" id="panel-login">
+    <h1>Welcome Back</h1>
+    <p class="subtitle">Log in to access your membership and book classes.</p>
+
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" required>
+      </div>
+
+      <div class="password-reset">
+        <a href="#forgot">Forgot your password?</a>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="loginRemember">
+        <label for="loginRemember">Remember me</label>
+      </div>
+
+      <button type="submit" class="btn-primary">Log In</button>
+    </form>
+
+    <div class="divider">OR</div>
+
+    <div class="social-login">
+      <button class="social-btn" onclick="handleSocialLogin('google')">🔍 Google</button>
+      <button class="social-btn" onclick="handleSocialLogin('apple')">🍎 Apple</button>
+    </div>
+
+    <div class="form-foot">
+      New to Powerblend? <button onclick="switchTab('signup')">Create an account</button>
+    </div>
+  </div>
+
+  <!-- SIGNUP PANEL -->
+  <div class="tab-panel" id="panel-signup">
+    <h1>Join Powerblend</h1>
+    <p class="subtitle">Create an account to start your fitness journey.</p>
+
+    <form id="signupForm" onsubmit="handleSignup(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="signupFirst">First Name</label>
+          <input type="text" id="signupFirst" placeholder="Jordan" required>
+        </div>
+        <div class="form-group">
+          <label for="signupLast">Last Name</label>
+          <input type="text" id="signupLast" placeholder="Vale" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="signupEmail">Email Address</label>
+        <input type="email" id="signupEmail" placeholder="you@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="signupPhone">Phone Number</label>
+        <input type="tel" id="signupPhone" placeholder="(555) 123-4567" required>
+      </div>
+
+      <div class="form-group">
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" placeholder="Create a strong password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="signupConfirm">Confirm Password</label>
+        <input type="password" id="signupConfirm" placeholder="Confirm your password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="signupGoal">Fitness Goal</label>
+        <select id="signupGoal" required>
+          <option value="">Select your primary goal</option>
+          <option value="strength">Build Strength</option>
+          <option value="endurance">Build Endurance</option>
+          <option value="weight">Weight Management</option>
+          <option value="conditioning">Athletic Conditioning</option>
+          <option value="recovery">Recovery & Mobility</option>
+          <option value="general">General Fitness</option>
+        </select>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="signupTerms" required>
+        <label for="signupTerms">I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a></label>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="signupNewsletter">
+        <label for="signupNewsletter">Subscribe to our newsletter for class updates and offers</label>
+      </div>
+
+      <button type="submit" class="btn-primary">Create Account</button>
+    </form>
+
+    <div class="divider">OR</div>
+
+    <div class="social-login">
+      <button class="social-btn" onclick="handleSocialSignup('google')">🔍 Google</button>
+      <button class="social-btn" onclick="handleSocialSignup('apple')">🍎 Apple</button>
+    </div>
+
+    <div class="form-foot">
+      Already have an account? <button onclick="switchTab('login')">Log in</button>
+    </div>
+  </div>
+
+  <div class="help-section">
+    <h4>Need Help?</h4>
+    <p>Can't log in or having account issues?</p>
+    <button class="help-btn" onclick="alert('Support team: support@powerblend.com\nPhone: (555) 123-4567')">Contact Support</button>
+  </div>
+
+  <div style="text-align:center; margin-top:40px; padding-top:24px; border-top:1px solid var(--line);">
+    <p style="font-size:12px; color:rgba(244,242,237,0.5); margin-bottom:12px;">Are you an administrator?</p>
+    <a href="admin-login.html" style="display:inline-block; padding:8px 20px; background:rgba(255,68,5,0.1); border:1px solid var(--ember); color:var(--ember); text-decoration:none; border-radius:4px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(255,68,5,0.2)'" onmouseout="this.style.background='rgba(255,68,5,0.1)'">🔐 Admin Portal</a>
+  </div>
+</div>
+
+<script src="api-client.js"></script>
+<script>
+  // Tab switching
+  function switchTab(tabName) {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.getAttribute('data-tab') === tabName) {
+        btn.classList.add('active');
+      }
+    });
+
+    document.querySelectorAll('.tab-panel').forEach(panel => {
+      panel.classList.remove('active');
+    });
+
+    document.getElementById(`panel-${tabName}`).classList.add('active');
+  }
+
+  // Tab button listeners
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-tab');
+      switchTab(tab);
+    });
+  });
+
+  // Login handler
+  function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const complete = (user) => {
+      localStorage.setItem('powerblendUser', JSON.stringify(user || { email }));
+      showSuccess('Logged in successfully! Welcome back to Powerblend.');
+      setTimeout(() => { window.location.href = 'index.html'; }, 600);
+    };
+    if (window.PowerblendAPI) {
+      window.PowerblendAPI.login({ email, password }).then(complete).catch(error => alert(error.message));
+    } else {
+      const users = JSON.parse(localStorage.getItem('powerblendUsers') || '[]');
+      const user = users.find(item => item.email.toLowerCase() === email.toLowerCase() && item.password === password);
+      if (!user) {
+        alert('Invalid email or password.');
+        return;
+      }
+      complete(user);
+    }
+  }
+
+  // Signup handler
+  function handleSignup(event) {
+    event.preventDefault();
+    const firstName = document.getElementById('signupFirst').value;
+    const email = document.getElementById('signupEmail').value;
+    
+    if (document.getElementById('signupPassword').value !== document.getElementById('signupConfirm').value) {
+      alert('Passwords do not match!');
+      return;
+    }
+    
+    const data = {
+      firstName,
+      lastName: document.getElementById('signupLast').value,
+      email,
+      phone: document.getElementById('signupPhone').value,
+      password: document.getElementById('signupPassword').value,
+      goal: document.getElementById('signupGoal').value,
+      newsletter: document.getElementById('signupNewsletter').checked
+    };
+    const complete = (user) => {
+      localStorage.setItem('powerblendUser', JSON.stringify(user || { email, firstName }));
+      showSuccess('Account created successfully! Welcome to Powerblend.');
+      document.getElementById('signupForm').reset();
+      setTimeout(() => { window.location.href = 'index.html'; }, 600);
+    };
+    if (window.PowerblendAPI) {
+      window.PowerblendAPI.signup(data).then(complete).catch(error => alert(error.message));
+    } else {
+      const users = JSON.parse(localStorage.getItem('powerblendUsers') || '[]');
+      if (users.some(item => item.email.toLowerCase() === email.toLowerCase())) {
+        alert('An account with that email already exists.');
+        return;
+      }
+      users.push(data);
+      localStorage.setItem('powerblendUsers', JSON.stringify(users));
+      complete(data);
+    }
+  }
+
+  // Social login handlers
+  function handleSocialLogin(provider) {
+    alert(`Login with ${provider.charAt(0).toUpperCase() + provider.slice(1)} would be implemented here.`);
+  }
+
+  function handleSocialSignup(provider) {
+    alert(`Sign up with ${provider.charAt(0).toUpperCase() + provider.slice(1)} would be implemented here.`);
+  }
+
+  // Success message
+  function showSuccess(message) {
+    const successEl = document.getElementById('successMessage');
+    successEl.textContent = message;
+    successEl.classList.add('show');
+    
+    setTimeout(() => {
+      successEl.classList.remove('show');
+    }, 3000);
+  }
+
+  // Keep the inline handlers from submitting a second time.
+  document.addEventListener('submit', (e) => {
+    if (e.target.id === 'loginForm' || e.target.id === 'signupForm') {
+      e.preventDefault();
+    }
+  });
+</script>
+
+</body>
+</html>

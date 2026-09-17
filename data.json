@@ -1,0 +1,84 @@
+{
+  "users": [
+    {
+      "id": "382c635d-8134-4ece-9921-0ae6672596b9",
+      "firstName": "spider",
+      "lastName": "man",
+      "email": "spidy@gmail.com",
+      "phone": "5555",
+      "goal": "strength",
+      "newsletter": true,
+      "password": "scrypt:d2fa4d8cab671ae2ec4d10475f710fb7:f481720a13c8bdf3e1964c3b793cedbff665b7112d4e5b18a122a65cee4f3ea87932ac79e72b75932917be66b987a69bbf46fc84ced1e968f9ee09b8d9934e14",
+      "createdAt": "2026-09-16T17:37:54.853Z"
+    },
+    {
+      "id": "fa7817f0-0534-4c83-b4d5-55d0037b00d5",
+      "firstName": "spider",
+      "lastName": "man",
+      "email": "spiderman@gmail.com",
+      "phone": "5555",
+      "goal": "strength",
+      "newsletter": true,
+      "password": "scrypt:874360fb7c65ee88794837c4270d0ccc:3f931539d5c09d90da80156dbbf39336c7d21aeb749c844a0c85bee0fbdc8b045776418a3479ba75575b504c2df8fd8fba63d78585e26484ebd4e997287ced0b",
+      "createdAt": "2026-09-16T17:39:44.748Z"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "f7f0ef4c-2d8f-4b2a-93c5-a24371f2d52a",
+      "createdAt": "2026-09-16T17:42:39.094Z",
+      "name": "spiderman",
+      "email": "spiderman@gmail.com",
+      "goal": "Strength",
+      "day": "Monday",
+      "note": "spidy things",
+      "type": "booking",
+      "userId": "fa7817f0-0534-4c83-b4d5-55d0037b00d5"
+    }
+  ],
+  "memberships": [
+    {
+      "id": "030ca821-f54f-4f20-8c02-5828f3999d5a",
+      "createdAt": "2026-09-16T17:42:06.285Z",
+      "plan": "Monthly Pass",
+      "email": "spiderman@gmail.com",
+      "source": "membership-page",
+      "type": "membership",
+      "userId": "fa7817f0-0534-4c83-b4d5-55d0037b00d5"
+    }
+  ],
+  "orders": [
+    {
+      "id": "46381112-fbfa-4555-844b-eafe32041f9b",
+      "createdAt": "2026-09-17T05:07:14.715Z",
+      "items": [
+        {
+          "productId": 1,
+          "name": "Adjustable Dumbbells (5-50 lbs)",
+          "price": 199.99,
+          "qty": 1,
+          "size": null
+        },
+        {
+          "productId": 2,
+          "name": "Olympic Barbell (45 lbs)",
+          "price": 149.99,
+          "qty": 1,
+          "size": null
+        },
+        {
+          "productId": 3,
+          "name": "Resistance Bands Set",
+          "price": 34.99,
+          "qty": 1,
+          "size": null
+        }
+      ],
+      "total": 384.97,
+      "source": "shop",
+      "email": "spiderman@gmail.com",
+      "type": "order",
+      "userId": "fa7817f0-0534-4c83-b4d5-55d0037b00d5"
+    }
+  ]
+}

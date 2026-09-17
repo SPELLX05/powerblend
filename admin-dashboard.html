@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Powerblend Admin Dashboard</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b0b0c;--panel:#1f2023;--text:#f4f2ed;--muted:#a8aaad;--accent:#ff4405}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Arial,sans-serif}
+    header{display:flex;justify-content:space-between;align-items:center;padding:22px 5%;border-bottom:1px solid #393a3d}
+    h1,h2{margin:0;text-transform:uppercase;letter-spacing:.04em}h1{font-size:22px}h2{font-size:18px;margin-bottom:14px}
+    button{background:var(--accent);border:0;border-radius:4px;padding:10px 16px;font-weight:bold;cursor:pointer}
+    main{max-width:1400px;margin:0 auto;padding:34px 5%}.status{color:var(--muted);margin:0 0 24px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}.panel{background:var(--panel);border:1px solid #393a3d;border-radius:7px;padding:20px;overflow:auto}
+    .count{font-size:32px;color:var(--accent);font-weight:bold;margin-bottom:14px}table{width:100%;border-collapse:collapse;font-size:12px}
+    th,td{text-align:left;padding:9px 6px;border-bottom:1px solid #393a3d;vertical-align:top}th{color:var(--muted);text-transform:uppercase;font-size:10px}
+    .empty{color:var(--muted);padding:12px 0}@media(max-width:600px){header{padding:18px 4%}main{padding:24px 4%}}
+  </style>
+</head>
+<body>
+  <header><h1>Powerblend / Admin</h1><button id="logout">Log out</button></header>
+  <main><p id="status" class="status">Loading dashboard…</p><div id="dashboard" class="grid"></div></main>
+  <script>
+    const token = sessionStorage.getItem('powerblendAdminToken');
+    const status = document.getElementById('status');
+    document.getElementById('logout').onclick = () => { sessionStorage.removeItem('powerblendAdminToken'); location.href = 'admin-login.html'; };
+    const escapeHtml = value => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function renderTable(title, rows) {
+      const fields = rows.length ? Object.keys(rows[0]).filter(key => !['id','userId','type'].includes(key)) : [];
+      return `<section class="panel"><h2>${title}</h2><div class="count">${rows.length}</div>` +
+        (rows.length ? `<table><thead><tr>${fields.map(field => `<th>${escapeHtml(field)}</th>`).join('')}</tr></thead><tbody>` +
+        rows.map(row => `<tr>${fields.map(field => `<td>${escapeHtml(typeof row[field] === 'object' ? JSON.stringify(row[field]) : row[field])}</td>`).join('')}</tr>`).join('') +
+        '</tbody></table>' : '<p class="empty">No records yet.</p>') + '</section>';
+    }
+    async function load() {
+      if (!token) return location.replace('admin-login.html');
+      const response = await fetch('/api/admin/data', { headers: { Authorization: `Bearer ${token}` } });
+      if (response.status === 401) { sessionStorage.removeItem('powerblendAdminToken'); return location.replace('admin-login.html'); }
+      if (!response.ok) throw new Error('Could not load admin data.');
+      const data = await response.json();
+      status.textContent = `Updated ${new Date().toLocaleString()}`;
+      document.getElementById('dashboard').innerHTML = [
+        renderTable('Members', data.members), renderTable('Memberships', data.memberships),
+        renderTable('Bookings', data.bookings), renderTable('Orders', data.orders)
+      ].join('');
+    }
+    load().catch(error => { status.textContent = error.message; });
+  </script>
+</body>
+</html>
